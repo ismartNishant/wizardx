@@ -73,15 +73,29 @@ body {
     font-family: "Sour Gummy", serif;
   }
 
-  .btn-primary{
+  .btn-primary {
     font-family: "Sour Gummy", serif;
-   box-shadow: 5px 5px 0px #000;
+    box-shadow: 5px 5px 0px #000;
   }
-  .btn-primary:hover{
+
+  .btn-primary:hover {
     box-shadow: 5px 5px 0px #9AE600;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  .brand-image,
+  [ref] {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  .logo,
+  .nav-item,
+  .cta-button {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 }

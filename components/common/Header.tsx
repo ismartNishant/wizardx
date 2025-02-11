@@ -6,14 +6,12 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const Header = () => {
     const navLinks = ['Home', 'About', 'Services', 'Contact'];
     const headerRef = useRef(null);
 
-    // Animation configuration
     const animConfig = {
         initial: { y: -50, opacity: 0 },
         animate: { y: 0, opacity: 1 },
@@ -23,33 +21,31 @@ const Header = () => {
 
     useGSAP(() => {
         const ctx = gsap.context(() => {
+            // Set initial states
+            gsap.set('.logo', { ...animConfig.initial, y: -100 });
+            gsap.set('.nav-item', animConfig.initial);
+            gsap.set('.cta-button', { scale: 0, opacity: 0 });
+
+            // Animate elements
             const tl = gsap.timeline({
                 defaults: {
                     duration: animConfig.duration,
                     ease: animConfig.ease
-                }
+                },
+                delay: 0.1
             });
 
-            // Entrance animations sequence
-            tl.fromTo('.logo', 
-                { ...animConfig.initial, y: -100 },
-                animConfig.animate
-            )
-            .fromTo('.nav-item',
-                animConfig.initial,
-                {
-                    ...animConfig.animate,
-                    stagger: 0.1
-                },
-                '-=0.5'
-            )
-            .fromTo('.cta-button',
-                { scale: 0, opacity: 0 },
-                { scale: 1, opacity: 1 },
-                '-=0.3'
-            );
+            tl.to('.logo', animConfig.animate)
+              .to('.nav-item', {
+                  ...animConfig.animate,
+                  stagger: 0.1
+              }, '-=0.5')
+              .to('.cta-button', {
+                  scale: 1,
+                  opacity: 1
+              }, '-=0.3');
 
-            // Scroll-triggered shadow animation
+            // Scroll shadow animation
             ScrollTrigger.create({
                 start: 'top top',
                 onUpdate: () => {
@@ -58,14 +54,14 @@ const Header = () => {
                         gsap.to(headerRef.current, {
                             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
                             backdropFilter: 'blur(5px)',
-                            backgroundColor: 'rgba(248, 250, 252, 0.8)', // slate-50 with opacity
+                            backgroundColor: 'rgba(248, 250, 252, 0.8)',
                             duration: 0.3
                         });
                     } else {
                         gsap.to(headerRef.current, {
                             boxShadow: 'none',
                             backdropFilter: 'none',
-                            backgroundColor: 'rgb(248, 250, 252)', // solid slate-50
+                            backgroundColor: 'rgb(248, 250, 252)',
                             duration: 0.3
                         });
                     }
@@ -73,7 +69,7 @@ const Header = () => {
             });
         }, headerRef);
 
-        return () => ctx.revert(); // Cleanup
+        return () => ctx.revert();
     }, { scope: headerRef });
 
     return (
@@ -82,10 +78,10 @@ const Header = () => {
             className='w-full py-4 px-20 sticky top-0 bg-slate-50 z-50 transition-all duration-300'
         >
             <nav className='flex items-center justify-between'>
-                <h1 className='logo font-bold text-5xl sour-gummy'>LOGO</h1>
+                <h1 className='logo font-bold text-5xl sour-gummy opacity-0'>LOGO</h1>
                 <ul className='flex gap-12 items-center'>
                     {navLinks.map((link, index) => (
-                        <li key={index} className='nav-item text-lg font-semibold'>
+                        <li key={index} className='nav-item text-lg font-semibold opacity-0'>
                             <Link href={`/${link.toLowerCase()}`} className='group relative'>
                                 <span className="relative inline-flex overflow-hidden">
                                     <div className="translate-y-0 skew-y-0 transition duration-500 group-hover:translate-y-[-160%] group-hover:skew-y-12">
@@ -98,7 +94,7 @@ const Header = () => {
                             </Link>
                         </li>
                     ))}
-                    <li className='cta-button'>
+                    <li className='cta-button opacity-0'>
                         <Button>Request a Demo</Button>
                     </li>
                 </ul>
