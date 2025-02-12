@@ -69,7 +69,6 @@ const Hero = () => {
                     trigger: brandsContainerRef.current,
                     start: "top bottom-=150",
                     end: "bottom top+=150",
-                    markers: true,
                     toggleActions: "play pause resume reverse",
                     onUpdate: (self) => {
                         // Update marquee direction based on scroll
@@ -119,7 +118,7 @@ const Hero = () => {
             };
         }, containerRef);
     }, [isClient]);
-    
+
     const initialClasses = !isClient ? 'opacity-0' : '';
 
     return (
